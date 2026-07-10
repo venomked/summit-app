@@ -1,0 +1,11 @@
+{
+  "name": "hiroshi-diet-app",
+  "version": "5.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node app.test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.0.0"
+  }
+}
