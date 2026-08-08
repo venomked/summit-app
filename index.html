@@ -129,6 +129,26 @@
   }
   .cheer b{color:var(--amber);}
 
+  /* inbody lab */
+  .inbody{margin-top:16px;background:linear-gradient(180deg,rgba(110,200,150,0.10),rgba(110,200,150,0.02)),var(--surface);border:1px solid rgba(110,200,150,0.35);border-radius:18px;padding:16px 16px 14px;}
+  .inbody h3{margin:4px 0 12px;font-family:"Zen Kaku Gothic New",sans-serif;font-size:16px;font-weight:700;}
+  .ib-eval{margin:10px 0 0;padding-left:18px;font-size:12.5px;line-height:1.75;}
+  .ib-word{margin-top:10px;font-size:13px;line-height:1.7;background:rgba(110,200,150,0.08);border-radius:12px;padding:10px 12px;}
+  .ib-note{margin-top:8px;font-size:11.5px;color:var(--muted);line-height:1.6;}
+  .ib-guard{margin-top:8px;font-size:12.5px;line-height:1.65;}
+  .ib-guard.ok{color:#79c98f;}
+  .ib-guard.ng{color:#e58a7a;}
+  .ib-hist{margin-top:8px;font-size:11.5px;color:var(--muted);line-height:1.7;}
+  .ib-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+  .ib-chip{border:1px solid rgba(110,200,150,0.35);background:transparent;color:inherit;border-radius:999px;padding:5px 11px;font-size:11.5px;font-family:inherit;cursor:pointer;}
+  .ib-chip.on{background:rgba(110,200,150,0.22);border-color:rgba(110,200,150,0.8);font-weight:700;}
+  .ib-chart{margin-top:10px;background:rgba(0,0,0,0.14);border-radius:12px;padding:8px 6px 4px;}
+  .ib-chart svg{width:100%;height:auto;display:block;}
+  .ib-chart .axis{font-size:8.5px;fill:currentColor;opacity:.55;}
+  .ib-chart .vlab{font-size:8.5px;fill:currentColor;opacity:.9;font-weight:700;}
+  .ib-chart-note{font-size:11px;color:var(--muted);margin-top:4px;padding:0 4px;}
+  .ib-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+  @media(max-width:520px){.ib-fields{grid-template-columns:1fr 1fr;}}
   /* forecast */
   .forecast{margin-top:16px;background:linear-gradient(180deg,rgba(246,178,74,0.10),rgba(246,178,74,0.02)),var(--surface);border:1px solid rgba(246,178,74,0.35);border-radius:18px;padding:16px 16px 14px;}
   .fc-eyebrow{font-family:"Space Grotesk",sans-serif;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);}
@@ -249,9 +269,9 @@
 <body>
 <div class="wrap">
 
-  <p class="eyebrow">Summit Plan · v5.4 · 2026-07-11</p>
-  <h1 class="title jp-display">63kgの頂へ、<br>今日が第一歩。<span class="peak"></span></h1>
-  <p class="sub">起点 <b id="startLbl">76.3kg</b> → 頂上 <b id="goalLbl">63.0kg</b>。起点と目標は記録パネル下の設定で変更できます。増えた分は戻せる数字です。</p>
+  <p class="eyebrow">Summit Plan · v6.2 · 2026-08-08</p>
+  <h1 class="title jp-display">63.5kg・体脂肪12%の頂へ。<br>腹を割る登山、後半戦。<span class="peak"></span></h1>
+  <p class="sub">起点 <b id="startLbl">76.3kg</b> → 頂上 <b id="goalLbl">63.5kg</b>（体脂肪率12%＝ボクサー体型）。起点と目標は記録パネル下の設定で変更できます。増えた分は戻せる数字です。</p>
 
   <!-- HERO -->
   <div class="hero">
@@ -316,8 +336,44 @@
       <div class="fc-cell"><div class="k">腹囲</div><div class="v num"><span id="fcC">--</span><span class="u">cm</span></div><div class="dl num" id="fcCd"></div></div>
     </div>
     <div class="fc-goal" id="fcGoal"></div>
+    <div class="fc-goal" id="fcMile" style="margin-top:6px"></div>
     <div class="fc-word" id="fcWord"></div>
     <div class="fc-note" id="fcBasis"></div>
+  </div>
+
+  <!-- INBODY LAB -->
+  <div class="inbody">
+    <div class="fc-eyebrow">Body Lab · InBody実測（月1回）</div>
+    <h3>体組成ラボ：<span id="ibDate" class="num">--</span> 測定</h3>
+    <div class="fc-grid">
+      <div class="fc-cell"><div class="k">体脂肪率</div><div class="v num"><span id="ibPbf">--</span><span class="u">%</span></div><div class="dl num" id="ibPbfD"></div></div>
+      <div class="fc-cell"><div class="k">除脂肪量</div><div class="v num"><span id="ibFfm">--</span><span class="u">kg</span></div><div class="dl num" id="ibFfmD"></div></div>
+      <div class="fc-cell"><div class="k">骨格筋指数</div><div class="v num"><span id="ibSmi">--</span><span class="u">kg/m²</span></div><div class="dl" id="ibSmiD" style="font-size:10.5px"></div></div>
+    </div>
+    <ul class="ib-eval" id="ibEval"></ul>
+    <div class="ib-word" id="ibWord"></div>
+    <div class="ib-guard" id="ibGuard"></div>
+    <div class="ib-note" id="ibCal"></div>
+    <div class="ib-chips" id="ibMetChips" aria-label="グラフ項目の選択"></div>
+    <div class="ib-chips" id="ibPerChips" aria-label="期間の絞り込み"></div>
+    <div class="ib-chart"><svg id="ibChart" viewBox="0 0 320 132" preserveAspectRatio="xMidYMid meet" aria-label="InBody推移グラフ"></svg></div>
+    <div class="ib-chart-note" id="ibChartNote"></div>
+    <div class="ib-fields">
+      <div class="field"><label>測定日</label><input id="ibInD" type="date"></div>
+      <div class="field"><label>体重 kg</label><input id="ibInW" type="number" inputmode="decimal" step="0.1"></div>
+      <div class="field"><label>体脂肪量 kg</label><input id="ibInFm" type="number" inputmode="decimal" step="0.1"></div>
+      <div class="field"><label>骨格筋量 kg</label><input id="ibInSmm" type="number" inputmode="decimal" step="0.1"></div>
+      <div class="field"><label>SMI kg/m²</label><input id="ibInSmi" type="number" inputmode="decimal" step="0.1"></div>
+      <div class="field"><label>内臓脂肪Lv</label><input id="ibInVfl" type="number" inputmode="numeric" step="1"></div>
+      <div class="field"><label>腹囲 cm</label><input id="ibInC" type="number" inputmode="decimal" step="0.1"></div>
+      <div class="field" style="display:flex;align-items:flex-end"><button class="ghost" id="ibSaveBtn" style="width:100%;padding:10px 8px">InBody記録</button></div>
+    </div>
+    <div class="row" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="ghost" id="ibCsvBtn">InBody CSVを読み込み（アプリ書き出しを一括取込）</button>
+      <input type="file" id="ibCsvFile" accept=".csv,text/csv,text/plain" hidden>
+    </div>
+    <div class="ib-note">CSVの取り方：InBodyアプリ → 設定 → データ書き出し（CSV）。全期間・全項目のまま渡してOK。同じ測定日の再取込は上書きされます。手入力との併用可。</div>
+    <div class="ib-hist" id="ibHist"></div>
   </div>
 
   <!-- PHASES -->
@@ -333,14 +389,14 @@
       <div class="phase" data-phase="2">
         <span class="tag">Phase 2 · 09〜12月</span>
         <div class="nm">削り期</div>
-        <div class="rg num">74<span class="arrow">→</span>68-70<span style="font-size:13px;color:var(--muted)">kg台</span></div>
-        <div class="meta">週-0.3〜0.4kg。筋トレの漸進性で代謝を守りながら削る。</div>
+        <div class="rg num">74<span class="arrow">→</span>66<span style="font-size:13px;color:var(--muted)">kg・15%</span></div>
+        <div class="meta">週-0.35kg（体重の0.5%/週・安全域）。年末66kg・体脂肪率15%＝腹筋の輪郭が出る。摂取1,850kcal・タンパク質120gで筋肉を守りながら削る。10月に維持カロリー週を1回挟む。</div>
       </div>
       <div class="phase" data-phase="3">
         <span class="tag">Phase 3 · 2027 前半</span>
         <div class="nm">仕上げ期</div>
-        <div class="rg num">68-70<span class="arrow">→</span>63</div>
-        <div class="meta">年内は68〜70kg台が現実的なゴール。63kgは焦らず2027年前半に。</div>
+        <div class="rg num">66<span class="arrow">→</span>63.5<span style="font-size:13px;color:var(--muted)">kg・12%</span></div>
+        <div class="meta">2027年5〜6月に体脂肪率12%＝腹が割れる。勝利条件は体重ではなく「除脂肪55.5kg以上の死守」。肩・背中種目を追加して仕上げる。</div>
       </div>
     </div>
   </section>
@@ -397,7 +453,7 @@
     <details class="acc" open>
       <summary><span class="ic">食</span>食事設計（ここが9割）<span class="chev">›</span></summary>
       <div class="body">
-        <p class="note">目標 1,600〜1,700kcal／日・タンパク質 約110g／日・水1.5〜2L。1日約-500kcalの赤字で週-0.45〜0.6kg。攻めすぎないのがリバウンド予防。</p>
+        <p class="note">目標 1,850kcal／日・タンパク質 120g／日（除脂肪58kg×2.0g・1食30〜40g×3〜4回に分配）・水1.5〜2L。1日約-400kcalの赤字で週-0.35kg。基礎代謝1,624kcal（InBody実測）を下回る摂取は禁止——絞りすぎは筋肉から削れます。</p>
         <h4>直す優先順（太った原因対策）</h4>
         <ul>
           <li>間食をゼロにする（菓子・甘い飲料・つまみ食い）。増加分の主犯はほぼここ。</li>
@@ -545,7 +601,7 @@
       <div class="body">
         <ul>
           <li>減量ペースは体重の0.5〜1.0%/週が筋肉を守れる目安。速いほど除脂肪量の損失が増える（出典：Helmsらの減量レビュー、2014年〜）。週次判定の閾値はこれで実装</li>
-          <li>タンパク質は約1.6g/kg/日以上で筋合成効果がほぼ頭打ち。あなたの110g/日は78kgで約1.4g/kg、目標63kg到達時は約1.75g/kgで適正圏（出典：Mortonらメタ分析、2018年）</li>
+          <li>タンパク質は約1.6g/kg/日以上で筋合成効果がほぼ頭打ち。ただし減量期＋47歳の同化抵抗性を考慮し、除脂肪体重×2.0〜2.3g＝120g/日を採用（出典：Mortonらメタ分析2018年、Mooreら2015年）</li>
           <li>減量中の筋トレは筋量維持の最重要因子。有酸素だけの減量は筋肉も一緒に削る（出典：レジスタンス運動と除脂肪量に関するメタ分析、2021年）。だから本計画は筋トレ＞有酸素</li>
           <li>計画的ダイエットブレイク（維持カロリー期間の挿入）は代謝適応を和らげ長期減量に有利な可能性（出典：MATADOR試験、2017年）。停滞判定時の第3手として実装</li>
           <li>睡眠不足は同じカロリー制限でも脂肪の減りを悪化させ、除脂肪量の損失を増やす（出典：Nedeltchevaら、2010年）。23:30就寝は根性論ではなく科学</li>
@@ -555,6 +611,7 @@
           <li>その日の回復度に合わせて強度を調整する「自動調節（オートレギュレーション）」は、固定メニューより筋力向上と怪我予防に有利（出典：RPE・自動調節トレーニングの系統的レビュー、2021年〜）。レディネス採点（睡眠・疲労・起床時心拍・部位の痛み）はこの実装</li>
           <li>3〜4週ごとに意図的に負荷を落とす「ディロード」は疲労蓄積とオーバーユース障害を防ぎ、長期の伸びを守る（出典：ピリオダイゼーション研究の系統的レビュー）。本アプリは第4週を自動でディロード指示</li>
           <li>起床時の安静時心拍が普段より高い日は回復不足のサイン。高強度を避けると過負荷とパフォーマンス低下を防げる（出典：心拍による回復モニタリング研究、HRVトレーニングレビュー）</li>
+          <li>減量分の15〜25%は除脂肪から失われるのが実測の相場（高タンパク＋筋トレ併用時。無対策なら30%超）。みらい予報はこの分配を織り込んで体脂肪率・除脂肪の推移も予測し、除脂肪の計画線（月-0.3kg上限・下限55.5kg）を監視する（出典：Weinheimerらレビュー2010年、Longland/Phillips 2016年、Helmsら2014年）</li>
           <li>タンパク質は1日総量に加えて「1食あたり約0.4g/kg×3〜4回」の分配が筋合成に最適（出典：Schoenfeld & Aragon、2018年）。朝プロテイン＋毎食タンパク源の設計はこの実装</li>
           <li>睡眠時間を延ばす介入は、同じカロリー制限でも脂肪からの減少割合を高める（出典：睡眠延長と減量の介入研究、2018〜2022年）。23:30就寝ゲートはこの実装</li>
         </ul>
@@ -578,18 +635,18 @@
     <b>モニタリング：</b>日次は体重・体脂肪・腹囲、週次は月曜朝に睡眠週平均と筋トレ回数を追加。見るのは週平均体重。<br>
     <b>設計者注：</b>本書はトレーナー視点の運動・食事プランです。四十肩の診断・治療は整形外科の管轄で、医療判断ではありません。減量ペースは体重の0.5〜1.0%/週の安全域に収めています。<br>
     <b>知識ベース：</b>最終更新 2026-07-03。自動のネット取得はセキュリティ方針（外部通信の完全遮断）と両立しないため、知識更新はClaudeとの対話またはClaude Code運用キットで版を上げる方式。<br>
-    <b>更新ログ：</b>v3.1（2026-07-02）水泳を07/10以降に変更・陸上メニュー追加・ゴルフ週の調整ルール追加・HTMLダッシュボード化。／v3.2（2026-07-02）ホーム画面用にlocalStorage保存へ変更。外部URL・端末保存でも記録が残る版。／v3.3（2026-07-02）「今日のコーチ」追加。コンディション9項目からルールベースで当日の運動・食事メニューを自動生成（通信不要・無料）。／v4.0（2026-07-02）履歴保存・推移グラフ・7日平均・週ペースの自動算出、週次判定（順調/停滞/速すぎ→ダイエットブレイク提案）、ヘルスケア連携（ショートカット経由のURL受け取り）、バックアップ書き出し/読み込み、CSPによる外部通信遮断、設計根拠（減量科学の要点）を追加。／v4.1（2026-07-02）みらい予報を追加：NIHホール動的モデル簡易実装で90日後の体重・体脂肪率・腹囲を予測（代謝適応・Forbes分配・実測に基づく個人別腹囲係数）。標高計に90日後予測ライン、推移グラフに体脂肪率の第2線を追加。／v4.2（2026-07-03）スタート値（ゲージ起点）を画面から変更可能に。保存され、達成率・キャンプ位置・90日後予測ラインを即時再計算。／v4.3（2026-07-03）実測76.3kgに基づき起点・履歴を補正。7/1の78.0kgは測定条件差として除外（保存済み端末データからも自動除去）。フェーズ1を76.3→74kg台に更新。／v5.0（2026-07-03）レディネス採点（自動調節）を追加：睡眠・疲労・起床時心拍・肩/脚の状態から0〜100点で当日の適正強度をGO/EASY/CARE判定。4週サイクルのピリオダイゼーション（第4週は自動ディロード）を導入。メンターの声かけに実測ペース・週の積み上げを統合。設計根拠に最新運動生理学6項目を追記。／v5.1（2026-07-11）「今週やること」を恒久化：固定文言（7/2週の予定直書き）を廃止し、定番タスク7項目の動的生成＋毎週月曜の自動リセットに変更。水中用具「購入済み」選択で有酸素タスクが水中ウォークに自動切替。／v5.2（2026-07-11）目標到達予測日を追加：ホールモデルで最長3年先までシミュレーションし到達日（YYYY-MM-DD・残日数）を表示、未達予測時は原因（停滞/増加）と対処を提示。目標体重を画面から変更可能に（下限51.0kg=BMI18.5の健康ガード、キャンプ・達成率・予測が連動再計算）。／v5.3（2026-07-11）フォーム動画を追加：今日のコーチの各種目に▶動画リンク、詳細に動画ライブラリ（スクワット/プランク/バックエクステンション/水中ウォーキングは存在確認済みの定番動画、マシン系はリンク切れしない検索リンク）。リンク方式のためアプリ本体の外部通信ゼロは維持。／v5.4（2026-07-11）A案の曜日設計を実装：金曜（ホリデイ全館定休）はコーチの場所を自宅に自動初期化し定休日を注意表示、レディネスに曜日ごとの「今日の型」（月水=ジム筋トレ/火木=プール/金=自宅/土=ゴルフor軽め/日=休養）を表示、チェックリスト表記を月水=ジム・金=自宅・日曜=休養に更新。
+    <b>更新ログ：</b>v3.1（2026-07-02）水泳を07/10以降に変更・陸上メニュー追加・ゴルフ週の調整ルール追加・HTMLダッシュボード化。／v3.2（2026-07-02）ホーム画面用にlocalStorage保存へ変更。外部URL・端末保存でも記録が残る版。／v3.3（2026-07-02）「今日のコーチ」追加。コンディション9項目からルールベースで当日の運動・食事メニューを自動生成（通信不要・無料）。／v4.0（2026-07-02）履歴保存・推移グラフ・7日平均・週ペースの自動算出、週次判定（順調/停滞/速すぎ→ダイエットブレイク提案）、ヘルスケア連携（ショートカット経由のURL受け取り）、バックアップ書き出し/読み込み、CSPによる外部通信遮断、設計根拠（減量科学の要点）を追加。／v4.1（2026-07-02）みらい予報を追加：NIHホール動的モデル簡易実装で90日後の体重・体脂肪率・腹囲を予測（代謝適応・Forbes分配・実測に基づく個人別腹囲係数）。標高計に90日後予測ライン、推移グラフに体脂肪率の第2線を追加。／v4.2（2026-07-03）スタート値（ゲージ起点）を画面から変更可能に。保存され、達成率・キャンプ位置・90日後予測ラインを即時再計算。／v4.3（2026-07-03）実測76.3kgに基づき起点・履歴を補正。7/1の78.0kgは測定条件差として除外（保存済み端末データからも自動除去）。フェーズ1を76.3→74kg台に更新。／v5.0（2026-07-03）レディネス採点（自動調節）を追加：睡眠・疲労・起床時心拍・肩/脚の状態から0〜100点で当日の適正強度をGO/EASY/CARE判定。4週サイクルのピリオダイゼーション（第4週は自動ディロード）を導入。メンターの声かけに実測ペース・週の積み上げを統合。設計根拠に最新運動生理学6項目を追記。／v5.1（2026-07-11）「今週やること」を恒久化：固定文言（7/2週の予定直書き）を廃止し、定番タスク7項目の動的生成＋毎週月曜の自動リセットに変更。水中用具「購入済み」選択で有酸素タスクが水中ウォークに自動切替。／v5.2（2026-07-11）目標到達予測日を追加：ホールモデルで最長3年先までシミュレーションし到達日（YYYY-MM-DD・残日数）を表示、未達予測時は原因（停滞/増加）と対処を提示。目標体重を画面から変更可能に（下限51.0kg=BMI18.5の健康ガード、キャンプ・達成率・予測が連動再計算）。／v5.3（2026-07-11）フォーム動画を追加：今日のコーチの各種目に▶動画リンク、詳細に動画ライブラリ（スクワット/プランク/バックエクステンション/水中ウォーキングは存在確認済みの定番動画、マシン系はリンク切れしない検索リンク）。リンク方式のためアプリ本体の外部通信ゼロは維持。／v5.4（2026-07-11）A案の曜日設計を実装：金曜（ホリデイ全館定休）はコーチの場所を自宅に自動初期化し定休日を注意表示、レディネスに曜日ごとの「今日の型」（月水=ジム筋トレ/火木=プール/金=自宅/土=ゴルフor軽め/日=休養）を表示、チェックリスト表記を月水=ジム・金=自宅・日曜=休養に更新。／v6.0（2026-08-08）体組成ラボを追加：InBody実測（2026-08-05初回：体脂肪率22.9%・除脂肪58.0kg・SMI9.2・内臓脂肪Lv6）を月次記録し、SMI/体脂肪率/内臓脂肪/左右差をルールベースで自動評価。自宅体組成計をInBody基準で自動校正（差分をみらい予報に適用）。除脂肪ガード（計画線＝月-0.3kg上限・下限55.5kg、割込時は維持週を指示）。みらい予報を体脂肪率ベースに刷新：筋トレ＋高タンパクの除脂肪温存効果（減量分の除脂肪損失を約20%に補正）を分配計算に組込み、見た目マイルストーン（15%＝輪郭／12%＝割れる）の到達日を予測。目標を63.5kg・体脂肪率12%（2027年前半）に更新、年末中間目標66kg・15%（Camp2）、栄養目標を1,850kcal・タンパク質120g/日に改定。／v6.1（2026-08-08）InBody公式CSVの一括取込を追加：アプリ書き出しCSV（UTF-8/Shift_JIS自動判別・列名で自動マッピング・「-」欠損対応・同日再取込は新しいタイムスタンプで上書き）から全期間の測定を取込。体幹脂肪比率（腹部集中型判定）とInBody点数を評価・履歴に追加。／v6.2（2026-08-08）InBody推移グラフを追加：体脂肪率・体脂肪量・除脂肪・体重・骨格筋量・SMI・内臓脂肪Lv・腹囲・InBody点数・基礎代謝の10項目をチップで切替、期間は1ヶ月/3ヶ月(既定)/6ヶ月/1年/全期間で絞り込み。除脂肪グラフには計画線（月-0.3kg上限・下限55.5kg）を破線で重ね表示。SVG自前描画で外部通信ゼロを維持。
   </div>
 
 </div>
 
 <script>
 (function(){
-  var START = 76.3, GOAL = 63.0;
+  var START = 76.3, GOAL = 63.5;
   function campsList(){
     var arr=[];
     if(GOAL<73.5) arr.push({kg:74.0, label:"Camp1 74kg"});
-    if(GOAL<68.5) arr.push({kg:69.0, label:"Camp2 69kg"});
+    if(GOAL<65.5) arr.push({kg:66.0, label:"Camp2 66kg·15%"});
     arr.push({kg:GOAL, label:"Summit "+GOAL.toFixed(1)+"kg", summit:true});
     return arr;
   }
@@ -612,7 +669,7 @@
   }
   function phaseOf(w){
     if(w >= 74.0) return {n:1, name:"リセット期"};
-    if(w > GOAL+0.5)  return {n:2, name:"削り期"};
+    if(w > Math.max(GOAL+0.5,66.0)) return {n:2, name:"削り期"};
     return {n:3, name:"仕上げ期"};
   }
   function placeCamps(){
@@ -700,6 +757,7 @@
     renderChecks();
     render();
     renderTrend();
+    renderInbody();
     renderForecast();
   }
   function updateStreak(){
@@ -778,6 +836,296 @@
       verdict.textContent='データ蓄積中。直近7日と前の7日に各3日分たまると、週次判定（順調/停滞/速すぎ）が自動で動きます。';
     }
   }
+  // ---- InBody lab: monthly body-composition record, evaluation & FFM guard ----
+  var IB_SEED=[{d:'2026-08-05',w:75.3,fm:17.3,smm:33.3,smi:9.2,vfl:6,c:84.8,bmr:1624,score:79,trFat:8.8,whr:0.83,ts:'20260805220004',seg:{ra:3.26,la:3.23,tr:25.7,rl:9.52,ll:9.25}}];
+  var inbody=IB_SEED.slice();
+  function loadIB(){
+    if(hasStore()){
+      try{ var raw=localStorage.getItem('diet:inbody'); if(raw){ var arr=JSON.parse(raw); if(arr&&arr.length){ inbody=arr; } } }catch(e){}
+    }
+    IB_SEED.forEach(function(sd){ if(!inbody.some(function(e){return e.d===sd.d;})) inbody.push(sd); });
+    inbody.sort(function(a,b){return a.d<b.d?-1:1;});
+  }
+  function saveIB(){ if(hasStore()){ try{ localStorage.setItem('diet:inbody', JSON.stringify(inbody)); }catch(e){} } }
+  function ibLatest(){ return inbody.length?inbody[inbody.length-1]:null; }
+  function ibFirst(){ return inbody.length?inbody[0]:null; }
+  function ffmOf(e){ return e.w-e.fm; }
+  function pbfOf(e){ return e.fm/e.w*100; }
+  // home-scale calibration: InBody pbf minus nearest (±3d) home fat reading
+  function ibCalOffset(){
+    var L=ibLatest(); if(!L) return null;
+    var t=new Date(L.d+'T00:00:00').getTime(), best=null, bd=1e15;
+    state.hist.forEach(function(pnt){ if(pnt.f==null)return; var dt=Math.abs(new Date(pnt.d+'T00:00:00').getTime()-t); if(dt<=3*86400000&&dt<bd){bd=dt;best=pnt;} });
+    if(!best) return null;
+    return {off:+(pbfOf(L)-best.f).toFixed(1), homeF:best.f, homeD:best.d};
+  }
+  // FFM plan line: from first InBody, allow at most -0.3kg/month; absolute floor 55.5kg
+  function ibGuard(){
+    var F=ibFirst(), L=ibLatest(); if(!F||!L) return null;
+    var months=(new Date(L.d+'T00:00:00')-new Date(F.d+'T00:00:00'))/(86400000*30.4);
+    var floor=Math.max(55.5, ffmOf(F)-0.3*months);
+    return {ffm:ffmOf(L), floor:+floor.toFixed(1), ok: ffmOf(L)>=floor-0.05};
+  }
+  function renderInbody(){
+    var box=document.getElementById('ibPbf'); if(!box) return;
+    var L=ibLatest(), F=ibFirst(); if(!L) return;
+    var prev=inbody.length>=2?inbody[inbody.length-2]:null;
+    document.getElementById('ibDate').textContent=L.d;
+    document.getElementById('ibPbf').textContent=pbfOf(L).toFixed(1);
+    document.getElementById('ibFfm').textContent=ffmOf(L).toFixed(1);
+    document.getElementById('ibSmi').textContent=(L.smi!=null?L.smi.toFixed(1):'--');
+    document.getElementById('ibPbfD').textContent=prev?(((pbfOf(L)-pbfOf(prev))>0?'+':'')+(pbfOf(L)-pbfOf(prev)).toFixed(1)+'pt'):'初回基準';
+    document.getElementById('ibFfmD').textContent=prev?(((ffmOf(L)-ffmOf(prev))>0?'+':'')+(ffmOf(L)-ffmOf(prev)).toFixed(1)+'kg'):'守るべき資産';
+    document.getElementById('ibSmiD').textContent=(L.smi!=null&&L.smi>=8.7)?'同年代上位':'';
+    // rule-based evaluation
+    var ev=[];
+    if(L.smi!=null){
+      if(L.smi>=8.7) ev.push('筋肉：SMI '+L.smi.toFixed(1)+'は「高」。47歳男性の上位水準。サルコペニア基準7.0を大きく超える');
+      else if(L.smi>=7.6) ev.push('筋肉：SMI '+L.smi.toFixed(1)+'は標準域。維持を最優先');
+      else if(L.smi>=7.0) ev.push('筋肉：SMI '+L.smi.toFixed(1)+'は標準下限。減量ペースを緩めタンパク質を増やす');
+      else ev.push('筋肉：SMI '+L.smi.toFixed(1)+'はサルコペニア域。減量を中断し筋トレ＋増タンパクへ切替');
+    }
+    var pb=pbfOf(L);
+    if(pb<10) ev.push('脂肪：'+pb.toFixed(1)+'%は絞りすぎ。ホルモン・回復への悪影響域。維持へ移行');
+    else if(pb<13) ev.push('脂肪：'+pb.toFixed(1)+'%＝ボクサー体型の完成域。腹筋は割れて見える。ここを維持');
+    else if(pb<17) ev.push('脂肪：'+pb.toFixed(1)+'%＝腹筋の輪郭が出る帯。仕上げ期の入口');
+    else if(pb<25) ev.push('脂肪：'+pb.toFixed(1)+'%は標準域だが減量対象。落とすのは脂肪'+L.fm.toFixed(1)+'kgのみ、筋肉は既に十分');
+    else ev.push('脂肪：'+pb.toFixed(1)+'%は肥満域。まず20%割れを目指す');
+    if(L.vfl!=null){
+      if(L.vfl<=9) ev.push('内臓脂肪：Lv'+L.vfl+'（10未満＝良好）。生活習慣病リスクは低い側');
+      else if(L.vfl<=14) ev.push('内臓脂肪：Lv'+L.vfl+'は注意域。腹囲を最優先KPIに');
+      else ev.push('内臓脂肪：Lv'+L.vfl+'は要対策域。有酸素と食事を最優先');
+    }
+    if(L.trFat!=null&&L.fm>0){
+      var trR=L.trFat/L.fm*100;
+      if(trR>=50) ev.push('脂肪の分布：体幹に'+trR.toFixed(0)+'%が集中（腹部集中型）。腹囲が最も感度の高いKPI。有酸素は継続必須');
+      else ev.push('脂肪の分布：体幹比率'+trR.toFixed(0)+'%。全身に分散した付き方');
+    }
+    if(L.seg&&L.seg.rl&&L.seg.ll){
+      var dd=Math.abs(L.seg.rl-L.seg.ll)/Math.max(L.seg.rl,L.seg.ll)*100;
+      if(dd>=2) ev.push('左右差：脚 '+dd.toFixed(1)+'%（弱い側='+(L.seg.rl>L.seg.ll?'左':'右')+'）。片脚種目は弱い側から先に・弱い側の回数を基準に');
+      else ev.push('左右差：脚 '+dd.toFixed(1)+'%で良好バランス');
+    }
+    document.getElementById('ibEval').innerHTML=ev.map(function(t){return '<li>'+t+'</li>';}).join('');
+    // trainer word
+    var word;
+    if(pb<13) word='トレーナー評：完成。ここからは彫刻の維持管理。摂取を維持カロリーへ戻し、筋トレ重量は絶対に落とさない。';
+    else if(pb<17) word='トレーナー評：仕上げ期。肩（サイドレイズ）と背中（ラットプルダウン/懸垂系）を週1〜2種目追加。Vシルエットが腹の見た目を1段引き上げる。脚は既に十分、現状維持でいい。';
+    else word='トレーナー評：土台（除脂肪'+ffmOf(L).toFixed(1)+'kg）は資産。仕事は脂肪'+L.fm.toFixed(1)+'kgの削減だけ。筋トレは回数より重量維持——それが「筋肉を守れ」という体への最強のシグナル。タンパク質120g/日を切らさない。';
+    document.getElementById('ibWord').textContent=word;
+    // FFM guard
+    var g=ibGuard(), gEl=document.getElementById('ibGuard');
+    if(g){
+      gEl.className='ib-guard '+(g.ok?'ok':'ng');
+      gEl.textContent=g.ok
+        ? '除脂肪ガード：実測'+g.ffm.toFixed(1)+'kg ≥ 計画線'+g.floor.toFixed(1)+'kg。筋肉は守れています。減量続行OK'
+        : '除脂肪ガード：実測'+g.ffm.toFixed(1)+'kg ＜ 計画線'+g.floor.toFixed(1)+'kg。筋肉が削れています。今週から1週間の維持カロリー（約2,200kcal）＋タンパク質と睡眠の再点検を';
+    }
+    // calibration note
+    var cal=ibCalOffset(), cEl=document.getElementById('ibCal');
+    if(cal){
+      cEl.textContent='自宅体組成計の校正：同時期の自宅値'+cal.homeF.toFixed(1)+'% に対しInBody実測'+pb.toFixed(1)+'%（差'+(cal.off>0?'+':'')+cal.off.toFixed(1)+'pt）。日々のトレンドは自宅計、絶対値はInBodyを正とする。みらい予報はこの補正を自動適用済み。';
+    } else { cEl.textContent='自宅体組成計の校正：InBody測定日±3日の自宅記録が見つかると自動で補正値を算出します。'; }
+    renderIbChart();
+    // history
+    document.getElementById('ibHist').innerHTML='測定履歴（'+inbody.length+'回）：'+inbody.map(function(e){return e.d+' '+e.w.toFixed(1)+'kg/'+pbfOf(e).toFixed(1)+'%/除脂肪'+ffmOf(e).toFixed(1)+'kg'+(e.score!=null?('/'+e.score+'点'):'');}).join('　→　')+'。次回は前回から約1ヶ月後・同時間帯・同条件で。';
+  }
+  function ibWireSave(){
+    var btn=document.getElementById('ibSaveBtn'); if(!btn) return;
+    btn.addEventListener('click', function(){
+      var d=document.getElementById('ibInD').value;
+      var w=parseFloat(document.getElementById('ibInW').value);
+      var fm=parseFloat(document.getElementById('ibInFm').value);
+      var smm=parseFloat(document.getElementById('ibInSmm').value);
+      var smi=parseFloat(document.getElementById('ibInSmi').value);
+      var vfl=parseFloat(document.getElementById('ibInVfl').value);
+      var c=parseFloat(document.getElementById('ibInC').value);
+      if(!d||isNaN(w)||w<40||w>150||isNaN(fm)||fm<3||fm>=w){ alert('測定日・体重・体脂肪量は必須です（体脂肪量は体重未満）。'); return; }
+      var rec={d:d,w:w,fm:fm};
+      if(!isNaN(smm))rec.smm=smm; if(!isNaN(smi))rec.smi=smi; if(!isNaN(vfl))rec.vfl=vfl; if(!isNaN(c))rec.c=c;
+      var i=inbody.findIndex(function(e){return e.d===d;});
+      if(i>=0) inbody[i]=Object.assign(inbody[i],rec); else inbody.push(rec);
+      inbody.sort(function(a,b){return a.d<b.d?-1:1;});
+      saveIB(); renderInbody(); renderForecast();
+      var m=document.getElementById('savedMsg'); m.textContent='InBodyを記録しました'; m.classList.add('show');
+      setTimeout(function(){m.classList.remove('show'); m.textContent='保存しました';},2000);
+    });
+  }
+
+  // ---- InBody trend chart (per-metric, period filter; SVG, no libs) ----
+  var IB_METRICS=[
+    {k:'pbf', label:'体脂肪率', u:'%',    dec:1, get:function(e){return pbfOf(e);}},
+    {k:'fm',  label:'体脂肪量', u:'kg',   dec:1, get:function(e){return e.fm;}},
+    {k:'ffm', label:'除脂肪',   u:'kg',   dec:1, get:function(e){return ffmOf(e);}},
+    {k:'w',   label:'体重',     u:'kg',   dec:1, get:function(e){return e.w;}},
+    {k:'smm', label:'骨格筋量', u:'kg',   dec:1, get:function(e){return e.smm!=null?e.smm:null;}},
+    {k:'smi', label:'SMI',      u:'kg/m²',dec:1, get:function(e){return e.smi!=null?e.smi:null;}},
+    {k:'vfl', label:'内臓脂肪', u:'Lv',   dec:0, get:function(e){return e.vfl!=null?e.vfl:null;}},
+    {k:'c',   label:'腹囲',     u:'cm',   dec:1, get:function(e){return e.c!=null?e.c:null;}},
+    {k:'score',label:'点数',    u:'点',   dec:0, get:function(e){return e.score!=null?e.score:null;}},
+    {k:'bmr', label:'基礎代謝', u:'kcal', dec:0, get:function(e){return e.bmr!=null?e.bmr:null;}}
+  ];
+  var IB_PERIODS=[{m:1,label:'1ヶ月'},{m:3,label:'3ヶ月'},{m:6,label:'6ヶ月'},{m:12,label:'1年'},{m:0,label:'全期間'}];
+  var ibSel={metric:'pbf', months:3};
+  function ibChipRow(boxId, items, isOn, onPick){
+    var box=document.getElementById(boxId); if(!box) return;
+    box.innerHTML='';
+    items.forEach(function(it){
+      var b=document.createElement('button');
+      b.type='button'; b.className='ib-chip'+(isOn(it)?' on':''); b.textContent=it.label;
+      b.addEventListener('click', function(){ onPick(it); renderIbChips(); renderIbChart(); });
+      box.appendChild(b);
+    });
+  }
+  function renderIbChips(){
+    ibChipRow('ibMetChips', IB_METRICS, function(m){return m.k===ibSel.metric;}, function(m){ibSel.metric=m.k;});
+    ibChipRow('ibPerChips', IB_PERIODS, function(pp){return pp.m===ibSel.months;}, function(pp){ibSel.months=pp.m;});
+  }
+  function renderIbChart(){
+    var svg=document.getElementById('ibChart'), note=document.getElementById('ibChartNote');
+    if(!svg) return;
+    var met=IB_METRICS.filter(function(m){return m.k===ibSel.metric;})[0]||IB_METRICS[0];
+    var all=inbody.slice().sort(function(a,b){return a.d<b.d?-1:1;});
+    var end=all.length?new Date(all[all.length-1].d+'T00:00:00').getTime():Date.now();
+    var from=(ibSel.months>0)?(end-ibSel.months*30.4*86400000):-Infinity;
+    var pts=all.map(function(e){return {t:new Date(e.d+'T00:00:00').getTime(), d:e.d, v:met.get(e)};})
+               .filter(function(pp){return pp.v!=null&&pp.t>=from;});
+    var W=320,H=132,L=36,R=10,T=14,B=20;
+    var ns='http://www.w3.org/2000/svg';
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    function el(tag,attrs,txt){ var e=document.createElementNS(ns,tag); for(var k in attrs)e.setAttribute(k,attrs[k]); if(txt!=null)e.textContent=txt; svg.appendChild(e); return e; }
+    if(!pts.length){
+      el('text',{x:W/2,y:H/2,'text-anchor':'middle','class':'axis','font-size':'11'},'この期間に測定がありません（期間を広げてください）');
+      note.textContent='';
+      return;
+    }
+    var vmin=Math.min.apply(null,pts.map(function(pp){return pp.v;}));
+    var vmax=Math.max.apply(null,pts.map(function(pp){return pp.v;}));
+    // plan line for FFM: floor(t)=max(55.5, ffm0-0.3kg/月)
+    var plan=null;
+    if(met.k==='ffm'&&ibFirst()){
+      var f0t=new Date(ibFirst().d+'T00:00:00').getTime(), f0v=ffmOf(ibFirst());
+      plan=function(t){ return Math.max(55.5, f0v-0.3*((t-f0t)/(86400000*30.4))); };
+      pts.forEach(function(pp){ var pv=plan(pp.t); if(pv<vmin)vmin=pv; if(pv>vmax)vmax=pv; });
+    }
+    var pad=(vmax-vmin)<0.001?Math.max(0.5,Math.abs(vmax)*0.02):(vmax-vmin)*0.18;
+    vmin-=pad; vmax+=pad;
+    var t0=pts[0].t, t1=pts[pts.length-1].t; if(t1-t0<86400000){ t0-=86400000; t1+=86400000; }
+    function X(t){ return L+(t-t0)/(t1-t0)*(W-L-R); }
+    function Y(v){ return T+(vmax-v)/(vmax-vmin)*(H-T-B); }
+    // grid: min/mid/max
+    [vmin+pad,(vmin+vmax)/2,vmax-pad].forEach(function(gv){
+      el('line',{x1:L,y1:Y(gv),x2:W-R,y2:Y(gv),stroke:'currentColor','stroke-opacity':'0.12','stroke-width':'0.6'});
+      el('text',{x:L-3,y:Y(gv)+3,'text-anchor':'end','class':'axis'},gv.toFixed(met.dec));
+    });
+    // plan dashed line
+    if(plan){
+      el('line',{x1:X(t0),y1:Y(plan(t0)),x2:X(t1),y2:Y(plan(t1)),stroke:'#e58a7a','stroke-width':'1.2','stroke-dasharray':'4 3','stroke-opacity':'0.85'});
+      el('text',{x:W-R,y:Y(plan(t1))-4,'text-anchor':'end','class':'axis',fill:'#e58a7a','fill-opacity':'0.95'},'計画線(下限)');
+    }
+    // polyline + dots + value labels
+    if(pts.length>1){
+      el('polyline',{points:pts.map(function(pp){return X(pp.t).toFixed(1)+','+Y(pp.v).toFixed(1);}).join(' '),
+        fill:'none',stroke:'#79c98f','stroke-width':'1.8','stroke-linejoin':'round','stroke-linecap':'round'});
+    }
+    pts.forEach(function(pp,i){
+      el('circle',{cx:X(pp.t),cy:Y(pp.v),r:pts.length>14?1.8:2.6,fill:'#79c98f'});
+      if(pts.length<=8){
+        el('text',{x:X(pp.t),y:Y(pp.v)-6,'text-anchor':'middle','class':'vlab'},pp.v.toFixed(met.dec));
+      }
+    });
+    // x labels: first & last date
+    el('text',{x:L,y:H-6,'text-anchor':'start','class':'axis'},pts[0].d.slice(2));
+    if(pts.length>1) el('text',{x:W-R,y:H-6,'text-anchor':'end','class':'axis'},pts[pts.length-1].d.slice(2));
+    // note: delta over shown range
+    if(pts.length>1){
+      var dv=pts[pts.length-1].v-pts[0].v;
+      note.textContent=met.label+'：期間内 '+(dv>0?'+':'')+dv.toFixed(met.dec)+met.u+'（'+pts[0].v.toFixed(met.dec)+' → '+pts[pts.length-1].v.toFixed(met.dec)+met.u+'・'+pts.length+'回測定）';
+    } else {
+      note.textContent=met.label+'：'+pts[0].v.toFixed(met.dec)+met.u+'（この期間は1回のみ。測定が2回以上で折れ線になります）';
+    }
+  }
+
+  // ---- InBody CSV import (official app export; UTF-8 / Shift_JIS auto-detect) ----
+  function ibParseCSV(text){
+    text=text.replace(/^\uFEFF/,'');
+    var lines=text.split(/\r?\n/).filter(function(l){return l.trim()!=='';});
+    if(lines.length<2) return {recs:[],err:'データ行がありません'};
+    var head=lines[0].split(',').map(function(h){return h.trim();});
+    function col(names){ for(var i=0;i<head.length;i++){ for(var j=0;j<names.length;j++){ if(head[i].indexOf(names[j])===0) return i; } } return -1; }
+    var ci={
+      d:col(['日付']), w:col(['体重']), smm:col(['骨格筋量']), mm:col(['筋肉量']), fm:col(['体脂肪量']),
+      pbf:col(['体脂肪率']), bmr:col(['基礎代謝量']), score:col(['InBody点数']),
+      ra:col(['右腕筋肉量']), la:col(['左腕筋肉量']), tr:col(['体幹筋肉量']), rl:col(['右脚筋肉量']), ll:col(['左脚筋肉量']),
+      trF:col(['体幹体脂肪量']), whr:col(['ウエストヒップ比']), c:col(['腹囲']), vfl:col(['内臓脂肪レベル']),
+      tbw:col(['体水分量']), prot:col(['タンパク質量']), smi:col(['骨格筋指数'])
+    };
+    if(ci.d<0||ci.w<0||ci.fm<0) return {recs:[],err:'InBody形式のCSVではありません（日付・体重・体脂肪量の列が必要）'};
+    function num(cells,i){ if(i<0||i>=cells.length) return null; var v=cells[i].trim(); if(v===''||v==='-') return null; var f=parseFloat(v); return isNaN(f)?null:f; }
+    var recs=[];
+    for(var li=1;li<lines.length;li++){
+      var cells=lines[li].split(',');
+      var ds=(cells[ci.d]||'').trim().replace(/[^0-9]/g,'');
+      if(ds.length<8) continue;
+      var d=ds.slice(0,4)+'-'+ds.slice(4,6)+'-'+ds.slice(6,8);
+      var w=num(cells,ci.w), fm=num(cells,ci.fm);
+      if(w==null||fm==null||w<40||w>150||fm<3||fm>=w) continue;
+      var rec={d:d,w:w,fm:fm,ts:ds};
+      var v;
+      if((v=num(cells,ci.smm))!=null)rec.smm=v; if((v=num(cells,ci.mm))!=null)rec.mm=v;
+      if((v=num(cells,ci.smi))!=null)rec.smi=v; if((v=num(cells,ci.vfl))!=null)rec.vfl=v;
+      if((v=num(cells,ci.c))!=null)rec.c=v;     if((v=num(cells,ci.bmr))!=null)rec.bmr=v;
+      if((v=num(cells,ci.score))!=null)rec.score=v; if((v=num(cells,ci.whr))!=null)rec.whr=v;
+      if((v=num(cells,ci.tbw))!=null)rec.tbw=v; if((v=num(cells,ci.prot))!=null)rec.prot=v;
+      if((v=num(cells,ci.trF))!=null)rec.trFat=v;
+      var seg={}, any=false;
+      [['ra','ra'],['la','la'],['tr','tr'],['rl','rl'],['ll','ll']].forEach(function(kk){ var x=num(cells,ci[kk[0]]); if(x!=null){seg[kk[1]]=x;any=true;} });
+      if(any)rec.seg=seg;
+      recs.push(rec);
+    }
+    return {recs:recs,err:null};
+  }
+  function ibMerge(recs){
+    var added=0, updated=0;
+    recs.forEach(function(r){
+      var i=inbody.findIndex(function(e){return e.d===r.d;});
+      if(i>=0){
+        if(!inbody[i].ts||!r.ts||r.ts>=inbody[i].ts){ inbody[i]=Object.assign({},inbody[i],r); }
+        updated++;
+      } else { inbody.push(r); added++; }
+    });
+    inbody.sort(function(a,b){return a.d<b.d?-1:1;});
+    return {added:added,updated:updated};
+  }
+  function ibDecode(buf){
+    var txt='';
+    try{ txt=new TextDecoder('utf-8',{fatal:false}).decode(buf); }catch(e){}
+    if(txt.indexOf('体重')<0){
+      try{ var t2=new TextDecoder('shift_jis').decode(buf); if(t2.indexOf('体重')>=0) txt=t2; }catch(e){}
+    }
+    return txt;
+  }
+  function ibWireCSV(){
+    var btn=document.getElementById('ibCsvBtn'), inp=document.getElementById('ibCsvFile');
+    if(!btn||!inp) return;
+    btn.addEventListener('click', function(){ inp.click(); });
+    inp.addEventListener('change', function(ev){
+      var f=ev.target.files[0]; if(!f) return;
+      var r=new FileReader();
+      r.onload=function(){
+        var res=ibParseCSV(ibDecode(r.result));
+        if(res.err||!res.recs.length){ alert(res.err||'取り込める測定行がありませんでした。InBodyアプリの書き出しCSVを選んでください。'); inp.value=''; return; }
+        var m=ibMerge(res.recs);
+        saveIB(); renderInbody(); renderForecast();
+        var msg=document.getElementById('savedMsg');
+        msg.textContent='InBody CSV取込：新規'+m.added+'件・更新'+m.updated+'件'; msg.classList.add('show');
+        setTimeout(function(){msg.classList.remove('show'); msg.textContent='保存しました';},2600);
+        inp.value='';
+      };
+      r.readAsArrayBuffer(f);
+    });
+  }
+
   // ---- 90-day forecast: simplified NIH Hall dynamic model ----
   // Hall et al., Lancet 2011 / NIH Body Weight Planner に基づく簡易実装。
   // 直近の実測ペースからエネルギー収支を逆算し、代謝適応（体重減に伴う消費低下）と
@@ -815,27 +1163,37 @@
       var a=wc[0], b2=wc[wc.length-1];
       if(Math.abs(b2.w-a.w)>=1.5) cmPerKg=Math.min(1.6,Math.max(0.4,(b2.c-a.c)/(b2.w-a.w)));
     }
-    var FM=W0*(F0/100), FFM=W0-FM;
+    // InBody calibration: home scale reads high -> correct absolute %BF for the model
+    var calI=ibCalOffset(), F0c=F0;
+    if(calI!=null){ F0c=Math.min(45,Math.max(5,F0+calI.off)); basis+='。体脂肪率はInBody校正済（自宅計'+(calI.off>0?'+':'')+calI.off.toFixed(1)+'pt補正→'+F0c.toFixed(1)+'%起点）'; }
+    var FM=W0*(F0c/100), FFM=W0-FM;
     if(FM<3){FM=3;FFM=W0-3;}
+    var FM0i=FM;
     var fs0=FM/(FM+10.4);
     var rho0=9441*fs0+1816*(1-fs0);
     var D0=-slope*rho0;
     var k0=22*(1-fs0)+3.2*fs0+9;
-    var Wt=W0, plateauDay=0, camp74=null, camp69=null, goalDay=null, snapW=null, snapF=null;
+    var Wt=W0, plateauDay=0, camp74=null, camp69=null, goalDay=null, snapW=null, snapF=null, m15=null, m12=null;
     for(var d=1;d<=1095;d++){
       var fs=FM/(FM+10.4);
       var rho=9441*fs+1816*(1-fs);
       var E=D0-k0*(W0-Wt);
       if(D0>0&&E<=0){ if(!plateauDay)plateauDay=d; E=0; }
       var dW=-E/rho;
-      FM=Math.max(3,FM+dW*fs); FFM=FFM+dW*(1-fs);
+      // partition: Forbes raw, but resistance training + 120g protein preserves FFM
+      // (empirical: 15-25% of loss from FFM vs ~35% untrained; Weinheimer 2010 / Longland 2016)
+      var ffr=1-fs; var ffrEff=(dW<0)?Math.max(0.12, ffr*0.55):ffr;
+      FM=Math.max(3,FM+dW*(1-ffrEff)); FFM=FFM+dW*ffrEff;
       Wt=FM+FFM;
       if(Wt<50){Wt=50;} if(Wt>140){Wt=140;}
+      var pbNow=FM/Wt*100;
+      if(m15==null&&pbNow<=15)m15=d;
+      if(m12==null&&pbNow<=12)m12=d;
       if(camp74==null&&Wt<74)camp74=d;
-      if(camp69==null&&Wt<69)camp69=d;
+      if(camp69==null&&Wt<66)camp69=d;
       if(goalDay==null&&Wt<=GOAL)goalDay=d;
       if(d===90){ snapW=Wt; snapF=FM/Wt*100; }
-      if(d>=90&&goalDay!=null) break;
+      if(d>=90&&goalDay!=null&&m12!=null) break;
       if(d>=90&&plateauDay) break;
     }
     if(snapW==null){ snapW=Wt; snapF=FM/Wt*100; }
@@ -847,14 +1205,14 @@
     document.getElementById('fcC').textContent=predC.toFixed(1);
     var dw=predW-W0;
     document.getElementById('fcWd').textContent=(dw>0?'+':'')+dw.toFixed(1)+'kg';
-    document.getElementById('fcFd').textContent=((predF-F0)>0?'+':'')+(predF-F0).toFixed(1)+'pt';
+    document.getElementById('fcFd').textContent=((predF-F0c)>0?'+':'')+(predF-F0c).toFixed(1)+'pt';
     document.getElementById('fcCd').textContent=((predC-C0)>0?'+':'')+(predC-C0).toFixed(1)+'cm';
     document.getElementById('fcBasis').textContent=basis;
     var word;
     if(dw<-0.5){
       var mile='';
       if(camp74!=null&&W0>74) mile='このペースなら約'+Math.ceil(camp74/7)+'週間でCamp1（74kg台）を通過。';
-      else if(camp69!=null&&W0>69) mile='このペースなら約'+Math.ceil(camp69/7)+'週間でCamp2（69kg）に到達。';
+      else if(camp69!=null&&W0>66) mile='このペースなら約'+Math.ceil(camp69/7)+'週間でCamp2（66kg・体脂肪率15%圏）に到達。';
       word=mile+(plateauDay?('約'+Math.ceil(plateauDay/7)+'週目に代謝適応による停滞を予測——来たらダイエットブレイクの合図です。'):'')+'この未来は、毎朝の記録と今日の食事が作ります。';
     } else if(dw>0.5){
       word='このままだと3ヶ月後は'+predW.toFixed(1)+'kg。ただしこれは確定した未来ではなく、今日の食事から書き換えられる予測です。まず間食ゼロと撮るだけ記録から。';
@@ -875,6 +1233,15 @@
       goalMsg='現在のペースでは3年以内の到達見込みが立ちません。まず記録と食事の再点検から立て直しましょう。';
     }
     document.getElementById('fcGoal').textContent=goalMsg;
+    var mEl=document.getElementById('fcMile');
+    if(mEl){
+      function dstr(n){ var dd=new Date(Date.now()+n*86400000); return dd.getFullYear()+'-'+String(dd.getMonth()+1).padStart(2,'0')+'-'+String(dd.getDate()).padStart(2,'0'); }
+      var parts=[];
+      var pbStart=FM0i/W0*100;
+      if(pbStart>15) parts.push(m15!=null?('体脂肪率15%（腹筋の輪郭）：'+dstr(m15)+'頃'):'15%（輪郭）：現ペースでは3年内に届かない予測');
+      if(pbStart>12) parts.push(m12!=null?('12%（割れる・ボクサー体型）：'+dstr(m12)+'頃'):'12%（割れる）：現ペースでは3年内に届かない予測');
+      mEl.textContent=parts.length?('見た目マイルストーン予測 ▸ '+parts.join('　／　')):'';
+    }
     var proj=document.getElementById('proj');
     if(proj){
       var pp=pct(predW);
@@ -905,7 +1272,7 @@
     }catch(e){}
   }
   document.getElementById('expBtn').addEventListener('click', function(){
-    var data={latest:{weight:state.weight,fat:state.fat,waist:state.waist},hist:state.hist,checks:state.checks,cond:cond,exported:new Date().toISOString()};
+    var data={latest:{weight:state.weight,fat:state.fat,waist:state.waist},hist:state.hist,checks:state.checks,cond:cond,inbody:inbody,exported:new Date().toISOString()};
     var blob=new Blob([JSON.stringify(data,null,1)],{type:'application/json'});
     var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='diet-backup-'+todayStr()+'.json'; a.click();
     setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
@@ -918,6 +1285,7 @@
       if(d.hist && d.hist.length) state.hist=d.hist;
       if(d.latest){ if(d.latest.weight)state.weight=d.latest.weight; if(d.latest.fat)state.fat=d.latest.fat; if(d.latest.waist)state.waist=d.latest.waist; }
       if(d.checks) state.checks=d.checks;
+      if(d.inbody&&d.inbody.length){ inbody=d.inbody; saveIB(); }
       saveLatest(); saveHist(); saveChecks(); afterLoad();
     }catch(e){ alert('読み込めませんでした。このページで書き出したJSONを選んでください。'); } };
     r.readAsText(f);
@@ -1127,11 +1495,16 @@
     setTimeout(function(){m.classList.remove('show'); m.textContent='保存しました';},2200);
   });
 
+  try{ if(!localStorage.getItem('diet:v6goal')){ var _g=parseFloat(localStorage.getItem('diet:goal')); if(!isNaN(_g)&&Math.abs(_g-63.0)<0.01){ localStorage.setItem('diet:goal','63.5'); } localStorage.setItem('diet:v6goal','1'); } }catch(e){}
   try{ var gv0=localStorage.getItem('diet:goal'); if(gv0){ var gf0=parseFloat(gv0); if(!isNaN(gf0)&&gf0>=51&&gf0<=73.9) GOAL=gf0; } }catch(e){}
   try{ var sv0=localStorage.getItem('diet:start'); if(sv0){ var sf0=parseFloat(sv0); if(!isNaN(sf0)&&sf0>GOAL+0.5&&sf0<150) START=sf0; } }catch(e){}
   syncStartUI();
   placeCamps();
   loadCond();
+  loadIB();
+  ibWireSave();
+  ibWireCSV();
+  renderIbChips();
   loadState();
   ingestURL();
 })();
